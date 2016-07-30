@@ -1,0 +1,44 @@
+body {
+  background-image: url("http://lh3.googleusercontent.com/_to_GjBP203MpcIR4hPBJGH1hwPaapQuvTTAhQbLCWUposKnUW-Em9koM6x896W0sluxrrIPom7Bvb7g8qGz0o39=s1200");
+  background-attachment: fixed;
+}
+
+.panel {
+  margin-top: 25px;
+}
+
+.panel-body {
+  background-color: #A9D0EE;
+}
+
+.sidebar{
+  margin-top: 100px;
+}
+
+
+
+.sidebar-btn {
+  position: fixed;
+  background-color: #DF6C75;
+  width: 150px;
+  border:1px white solid;
+}
+
+.second-btn{
+  margin-top: 80px;
+}
+
+.salmon{
+  background-color: #DF6C75;
+}
+.form-input{
+  height: 30vw;
+}
+
+textarea.form-control{
+  height: 28vw;
+}
+
+.error-messages{
+  color:red;
+}
