@@ -1,6 +1,5 @@
 $(document).ready(function(){
   var api_root = 'http://localhost:3001/api/'
-  var temp_api_token = '8f383b545bda4fc2115a'
 
 
 
@@ -104,7 +103,7 @@ $(document.body).on('click', '#logout-button', function(ev){
   function fetchNotes(){
     $('#body').empty()
     console.log(api_token())
-    if(api_token().length < 5){
+    if((api_token() === undefined) || api_token() === null){
       console.log('hi!')
       loggedIn(false)
     }
