@@ -81,3 +81,7 @@ textarea.form-control{
 #login-button {
   background-color: #DF6C75;
 }
+
+.cursor-link{
+  cursor: pointer;
+}

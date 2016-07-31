@@ -1,20 +1,45 @@
 $(document).ready(function(){
   var api_root = 'http://localhost:3001/api/'
   var temp_api_token = '8f383b545bda4fc2115a'
-  var api_token = sessionStorage.getItem('api_token')
+
+
+
+  function api_token(){
+    return sessionStorage.getItem('api_token')
+  }
 
   function setApiToken(api_token){
     sessionStorage.setItem('api_token', api_token)
   }
 
-  $(document.body).on('click', '#signup-button', function(ev){
+  function emptySignLogForms(){
     $('#signup-modal .login-signup').empty()
+    $('#signup-modal #signup-email').val("")
+    $('#signup-modal #signup-password').val("")
+  }
+
+  function loggedIn(boolean){
+    if(boolean === true){
+      $('#login-button').html('Log Out')
+      $('#login-button').attr('id', 'logout-button')
+      $('#signup-button').prop('disabled', true)
+    }
+    if (boolean === false){
+      $('#logout-button').html('Log In')
+      $('#logout-button').attr('id', 'login-button')
+      $('#signup-button').prop('disabled', false)
+    }
+  }
+
+  $(document.body).on('click', '#signup-button', function(ev){
+    emptySignLogForms()
     $('#signup-modal .login-signup').append('Signup')
     var submit = document.querySelector("#signup-modal .login-signup")
     submit.setAttribute('id', 'signup-submit')
     $('#signup-modal').modal('show')
   }
 )
+
 
   $(document.body).on('click', '#signup-submit', function(ev){
     $.post(api_root + 'users',
@@ -24,7 +49,8 @@ $(document).ready(function(){
     }).success(function(data){
       setApiToken(data.user.api_token)
       $('#signup-modal').modal('hide')
-      alert('Sign-up Successful!')
+      loggedIn(true)
+      fetchNotes()
     }).error(function(data){
       console.log(data.responseJSON.email)
       $('.errors').empty()
@@ -34,7 +60,7 @@ $(document).ready(function(){
   })
 
   $(document.body).on('click', '#login-button', function(ev){
-    $('#signup-modal .login-signup').empty()
+    emptySignLogForms()
     $('#signup-modal .login-signup').append('Login')
     var submit = document.querySelector("#signup-modal .login-signup")
     submit.setAttribute('id', 'login-submit')
@@ -50,13 +76,17 @@ $(document.body).on('click', '#login-submit', function(ev){
   }).success(function(data){
     setApiToken(data.user.api_token)
     $('#signup-modal').modal('hide')
-    $('#login-button').html('Log Out')
-    $('#login-button').attr('id', 'logout-button')
+    loggedIn(true)
+    fetchNotes()
   }).error(function(data){
     $('.errors').empty()
     $('.errors').prepend(`<h6 class="error-messages">${data.responseJSON.error} </h6>`)
   })
+})
 
+$(document.body).on('click', '#logout-button', function(ev){
+  setApiToken(null)
+  fetchNotes()
 })
 
 
@@ -72,11 +102,20 @@ $(document.body).on('click', '#login-submit', function(ev){
 
 
   function fetchNotes(){
-    if (api_token.length > 1){
-      $('#login-button').html('Log Out')
-      $('#login-button').attr('id', 'logout-button')
+    $('#body').empty()
+    console.log(api_token())
+    if(api_token().length < 5){
+      console.log('hi!')
+      loggedIn(false)
     }
-    $.getJSON(api_root + 'notes', function(data){
+    else{
+      console.log('hello!')
+      loggedIn(true)
+    }
+    // When I first log-in, api_token() is still undefined in the console.log on line 100. Why is this? Right afterwards, it isn't.
+    //  Answer: It was beacuse I originally had fetchNotes() on line 66, where it running before I'd set the api_token. By putting it on line 61, I make it run a little afterward.
+    console.log(api_token())
+    $.getJSON(api_root + 'notes',{api_token: api_token()}, function(data){
       console.log(data.notes)
       $.each(data.notes, function(i, note){
       noteBuilder(note)
@@ -96,7 +135,7 @@ function noteBuilder(note, prepend){
   var noteSource = $("#note-handlebars").html()
   var noteTemplate = Handlebars.compile(noteSource)
 
-  var noteContext = {noteTitle: note.title, noteBody: noteBodySplit(note.body), noteTags:note.tags, noteCreatedAt: moment(note.created_at, "YYYYMMDD").fromNow()}
+  var noteContext = {noteIdTitle: note.id, noteIdEdit: note.id, noteTitle: note.title, noteBody: noteBodySplit(note.body), noteTags:note.tags, noteCreatedAt: moment(note.created_at, "YYYYMMDD").fromNow()}
   var noteHtml = noteTemplate(noteContext)
   if(prepend === true){
     $("#body").prepend(noteHtml)
@@ -117,12 +156,78 @@ $(document.body).on('click', '.tag-link', function(ev){
     })
   })
 })
+function editModalOpen(data){
+  $('#new-post-modal-title').html('Edit Note')
+  $('#post-note').attr('id', 'edit-note-submit')
+  $('#edit-note-submit').attr('data-id', data.note.id)
+  $('#note-title').val(data.note.title)
+  $('#note-body').val(data.note.body)
+  var tagNames = []
+  data.note.tags.forEach(tag => tagNames.push(tag.name))
+  console.log(tagNames)
+  $('#note-tags').val(tagNames.join(", "))
+  $('#new-post-modal').modal('show')
+}
+
+function editModalClose(){
+  $('#new-post-modal').modal('hide')
+  $('#new-post-modal-title').html('New Note')
+  $('#edit-note-submit').attr('id', 'post-note')
+  $('#note-title').val("")
+  $('#note-body').val("")
+  $('#note-tags').val("")
+}
+
+
+$(document.body).on('click', '#edit-note', function(ev){
+  $.getJSON(api_root + `notes/${ev.target.getAttribute('data-id')}`, function(data){
+    console.log(data)
+    editModalOpen(data)
+  })
+})
+
+$(document.body).on('click', '#edit-note-submit', function(ev){
+  var editNote = $.ajax({
+    url: api_root + `notes/${ev.target.getAttribute('data-id')}`,
+    method: "PUT",
+    data:{
+          api_token: api_token(),
+          id: ev.target.getAttribute('data-id'),
+          title: $('#note-title').val(),
+          body: $('#note-body').val(),
+          tags: $('#note-tags').val(),
+          dataType: "json"
+        },
+  })
+
+  editNote.done(function(data){
+    console.log(data)
+    noteBuilder(data.note, true)
+    editModalClose()
+    // I know that I have all the information I need to write some code that will build a note and shove it where it goes, but I'm not sure how.
+  })
+
+  editNote.fail(function(data){
+    console.log('data')
+    $('.errors').empty()
+    $.each(data.responseJSON.errors, function(i, x){$('.errors').prepend(`<h6 class="error-messages">${x.error + '. '} </h6>`)})
+
+  })
+
+
+
+
+})
+
+
+
+
 
 $(document.body).on('click', '#post-note', function(ev){
   ev.preventDefault()
   $.post(api_root + "notes",
   {
-   api_token: temp_api_token,
+   api_token: api_token(),
    title: $('#note-title').val(),
    body: $('#note-body').val(),
    tags: $('#note-tags').val()
