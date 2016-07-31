@@ -1,0 +1,142 @@
+<html>
+  <head>
+    <title>Notemeister 5000</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="main.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body class="container-fluid">
+    <h1 id="title" class="text-center"></h1>
+    <div class="col-xs-1 sidebar">
+      <div class="row">
+        <button id="home-button" type="button" class="btn sidebar-btn btn-lg text-white salmon">Home</button>
+      </div>
+      <div class="row">
+        <button id="signup-button" type="button" class="btn sidebar-btn btn-lg text-white salmon second-btn">Signup</button>
+      </div>
+      <div class="row">
+        <button id="login-button" type="button" class="btn sidebar-btn btn-lg text-white third-btn">Login</button>
+      </div>
+      <div class="row">
+        <button type="button" data-toggle="modal" data-target="#new-post-modal" class="btn salmon text-white sidebar-btn btn-lg fourth-btn">New Post</button>
+      </div>
+    </div>
+    <div id="body" class="col-xs-8 col-xs-offset-1">
+    </div>
+
+    <div class="modal fade" id="show-note-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="show-note-modal-header modal-header">
+            <h4 class="modal-title" id="show-note-modal-title"></h4>
+            <h6 id="show-note-modal-created"></h6>
+          </div>
+          <div class="modal-body">
+            <div id="show-note-modal-body">
+            </div>
+            <h6 id="show-note-modal-tags">Tags: </h6>
+          </div>
+          <div
+          <div class="modal-footer show-note-modal-footer">
+            <button type="button" class="btn btn-secondary btn-white" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="signup-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="signup-modal-title"></h4>
+          </div>
+          <div class="modal-body">
+            <div id="signup-modal-body">
+              <div class="errors">
+
+              </div>
+              <form>
+                <div class="form-group">
+                  <label class="form-control-label">email</label>
+                  <input type="text" class="form-control" id="signup-email">
+                </div>
+                <div class="form-group">
+                  <label class="form-control-label">password</label>
+                  <input type="password" class="form-control" id="signup-password">
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="modal-footer show-note-modal-footer">
+            <button type="button" class="btn btn-secondary btn-white" data-dismiss="modal">Close</button>
+            <button type="button" id="" class="btn salmon login-signup"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="new-post-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header salmon">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title" id="new-post-modal-title">New Note</h4>
+          </div>
+          <div class="modal-body">
+            <div class="errors">
+            </div>
+            <form>
+              <div class="form-group">
+                <label class="form-control-label">Title</label>
+                <input type="text" class="form-control" id="note-title">
+              </div>
+              <div class="form-group form-input">
+                <label for="message-text" class="form-control-label">Note</label>
+                <textarea class="form-control" id="note-body"></textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-control-label">Tags, separated by commas:</label>
+                <input type="text" class="form-control" id="note-tags">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" data-id:"" id="post-note" class="btn salmon">Send message</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script id="note-handlebars" type="text/x-handlebars-template">
+      <div class="note-body panel panel-default">
+        <div class="row panel-heading">
+          <h3 id="{{noteIdTitle}}" class="text-center panel-title">{{noteTitle}}</h3>
+        </div>
+        <div class="row panel-body">
+          {{#each noteBody}}
+          <p>{{this}}</p>
+          {{/each}}
+        </div>
+        <div class="row panel-footer">
+          <h6 class"text-muted">{{noteCreatedAt}}</h5>
+          <h6> Tags:
+          {{#each noteTags}}
+            <a class="tag-link" data-name="{{this.name}}">{{this.name}}</a>
+          {{/each}}
+          <span id="edit-note" data-id="{{noteIdEdit}}" class="pull-right cursor-link">Edit Note</span>
+        </h6>
+        </div>
+      </div>
+    </script>
+    <script id="title-handlebars" type="text/x-handlebars-template">
+      <h1 class="text-white"> Notemeister 5000{{punctuation}} {{tagName}} </h1>
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="main.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
+  </body>
+</html>
