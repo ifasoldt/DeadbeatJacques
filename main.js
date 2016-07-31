@@ -104,7 +104,7 @@ $(document.body).on('click', '#logout-button', function(ev){
   function fetchNotes(){
     $('#body').empty()
     console.log(api_token())
-    if(api_token().length < 5){
+    if((api_token() === undefined) || (api_token() === null)){
       console.log('hi!')
       loggedIn(false)
     }
