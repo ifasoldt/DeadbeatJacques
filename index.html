@@ -8,15 +8,70 @@
     <h1 id="title" class="text-center"></h1>
     <div class="col-xs-1 sidebar">
       <div class="row">
-        <button id="home-button" type="button" class="btn sidebar-btn btn-lg">Home</button>
+        <button id="home-button" type="button" class="btn sidebar-btn btn-lg text-white salmon">Home</button>
       </div>
       <div class="row">
-        <button type="button" data-toggle="modal" data-target="#new-post-modal" class="btn sidebar-btn btn-lg second-btn">New Post</button>
+        <button id="signup-button" type="button" class="btn sidebar-btn btn-lg text-white salmon second-btn">Signup</button>
       </div>
-
-
+      <div class="row">
+        <button id="login-button" type="button" class="btn sidebar-btn btn-lg text-white third-btn">Login</button>
+      </div>
+      <div class="row">
+        <button type="button" data-toggle="modal" data-target="#new-post-modal" class="btn salmon text-white sidebar-btn btn-lg fourth-btn">New Post</button>
+      </div>
     </div>
     <div id="body" class="col-xs-8 col-xs-offset-1">
+    </div>
+
+    <div class="modal fade" id="show-note-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="show-note-modal-header modal-header">
+            <h4 class="modal-title" id="show-note-modal-title"></h4>
+            <h6 id="show-note-modal-created"></h6>
+          </div>
+          <div class="modal-body">
+            <div id="show-note-modal-body">
+            </div>
+            <h6 id="show-note-modal-tags">Tags: </h6>
+          </div>
+          <div
+          <div class="modal-footer show-note-modal-footer">
+            <button type="button" class="btn btn-secondary btn-white" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="signup-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="signup-modal-title"></h4>
+          </div>
+          <div class="modal-body">
+            <div id="signup-modal-body">
+              <div class="errors">
+
+              </div>
+              <form>
+                <div class="form-group">
+                  <label class="form-control-label">email</label>
+                  <input type="text" class="form-control" id="signup-email">
+                </div>
+                <div class="form-group">
+                  <label class="form-control-label">password</label>
+                  <input type="text" class="form-control" id="signup-password">
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="modal-footer show-note-modal-footer">
+            <button type="button" class="btn btn-secondary btn-white" data-dismiss="modal">Close</button>
+            <button type="button" id="" class="btn salmon login-signup"></button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="modal fade" id="new-post-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -29,8 +84,7 @@
             <h4 class="modal-title" id="exampleModalLabel">New message</h4>
           </div>
           <div class="modal-body">
-            <div id="errors">
-
+            <div class="errors">
             </div>
             <form>
               <div class="form-group">
@@ -75,7 +129,7 @@
       </div>
     </script>
     <script id="title-handlebars" type="text/x-handlebars-template">
-      <h1> Notemeister 5000{{punctuation}} {{tagName}} </h1>
+      <h1 class="text-white"> Notemeister 5000{{punctuation}} {{tagName}} </h1>
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>

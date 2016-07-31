@@ -19,13 +19,22 @@ body {
 
 .sidebar-btn {
   position: fixed;
-  background-color: #DF6C75;
   width: 150px;
   border:1px white solid;
 }
 
+/*is there a better way to space fixed elements? I wanted to fix the sidebar, but it doesn't work.*/
+
 .second-btn{
   margin-top: 80px;
+}
+
+.third-btn{
+  margin-top: 160px;
+}
+
+.fourth-btn{
+  margin-top: 240px;
 }
 
 .salmon{
@@ -41,4 +50,34 @@ textarea.form-control{
 
 .error-messages{
   color:red;
+}
+
+#show-note-modal-created {
+  color:grey;
+}
+
+.show-note-modal-footer{
+  background-image: url("http://41.media.tumblr.com/e9e927a47d15759a6a4c8c4d6aa789d6/tumblr_mp272hHuA41r13ilso1_400.png");
+  background-position: bottom;
+
+}
+
+.show-note-modal-header{
+  background-image: url("http://41.media.tumblr.com/e9e927a47d15759a6a4c8c4d6aa789d6/tumblr_mp272hHuA41r13ilso1_400.png");
+}
+
+.btn-white{
+  background-color: white;
+}
+
+.text-white{
+  color:white;
+}
+
+#logout-button {
+  background-color: grey;
+}
+
+#login-button {
+  background-color: #DF6C75;
 }
