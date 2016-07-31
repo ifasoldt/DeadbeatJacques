@@ -1,5 +1,5 @@
 $(document).ready(function(){
-  var api_root = 'http://localhost:3001/api/'
+  var api_root = 'https://agile-springs-31596.herokuapp.com/api'
   var temp_api_token = '8f383b545bda4fc2115a'
 
 
