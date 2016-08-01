@@ -1,6 +1,5 @@
 $(document).ready(function(){
   var api_root = 'https://agile-springs-31596.herokuapp.com/api/'
-  var temp_api_token = '8f383b545bda4fc2115a'
 
 
 
@@ -86,6 +85,7 @@ $(document.body).on('click', '#login-submit', function(ev){
 
 $(document.body).on('click', '#logout-button', function(ev){
   setApiToken(null)
+  loggedIn(false)
   fetchNotes()
 })
 
