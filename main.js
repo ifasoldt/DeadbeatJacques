@@ -131,11 +131,18 @@ function noteBodySplit(body){
   return lines
 }
 
+function editable(){
+  if ((api_token() !== undefined) && (api_token() !== null)){
+    return "Edit Note"
+}
+}
+
+
 function noteBuilder(note, prepend){
   var noteSource = $("#note-handlebars").html()
   var noteTemplate = Handlebars.compile(noteSource)
 
-  var noteContext = {noteIdTitle: note.id, noteIdEdit: note.id, noteTitle: note.title, noteBody: noteBodySplit(note.body), noteTags:note.tags, noteCreatedAt: moment(note.created_at, "YYYYMMDD").fromNow()}
+  var noteContext = {noteIdTitle: note.id, edit-button: editable()  noteIdEdit: note.id, noteTitle: note.title, noteBody: noteBodySplit(note.body), noteTags:note.tags, noteCreatedAt: moment(note.created_at, "YYYYMMDD").fromNow()}
   var noteHtml = noteTemplate(noteContext)
   if(prepend === true){
     $("#body").prepend(noteHtml)
