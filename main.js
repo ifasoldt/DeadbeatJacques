@@ -85,6 +85,7 @@ $(document.body).on('click', '#login-submit', function(ev){
 
 $(document.body).on('click', '#logout-button', function(ev){
   setApiToken(null)
+  console.log("logged-in?")
   loggedIn(false)
   fetchNotes()
 })
