@@ -8,13 +8,17 @@ body {
 }
 
 .panel-body {
-  background-color: #A9D0EE;
+  background-color: #7EACBB;
+  color: white;
 }
 
 .sidebar{
   margin-top: 100px;
 }
 
+#note-handlebars-title{
+  cursor: pointer;
+}
 
 
 .sidebar-btn {
@@ -38,7 +42,7 @@ body {
 }
 
 .salmon{
-  background-color: #DF6C75;
+  background-color: #E4BF64;
 }
 .form-input{
   height: 30vw;
@@ -79,7 +83,7 @@ textarea.form-control{
 }
 
 #login-button {
-  background-color: #DF6C75;
+  background-color: #E4BF64;
 }
 
 .cursor-link{

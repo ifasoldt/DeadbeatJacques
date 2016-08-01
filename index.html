@@ -27,15 +27,14 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="show-note-modal-header modal-header">
-            <h4 class="modal-title" id="show-note-modal-title"></h4>
-            <h6 id="show-note-modal-created"></h6>
+            <h4 class="modal-title empty-show-note-modal" id="show-note-modal-title"></h4>
+            <h6 class="empty-show-note-modal" id="show-note-modal-created"></h6>
           </div>
           <div class="modal-body">
-            <div id="show-note-modal-body">
+            <div id="show-note-modal-body" class="empty-show-note-modal">
             </div>
-            <h6 id="show-note-modal-tags">Tags: </h6>
+            <h6 id="show-note-modal-tags" class="empty-show-note-modal">Tags: </h6>
           </div>
-          <div
           <div class="modal-footer show-note-modal-footer">
             <button type="button" class="btn btn-secondary btn-white" data-dismiss="modal">Close</button>
           </div>
@@ -99,6 +98,10 @@
                 <label class="form-control-label">Tags, separated by commas:</label>
                 <input type="text" class="form-control" id="note-tags">
               </div>
+              <!-- <div class="form-group">
+                <label class="form-control-label">Upload A Picture</label>
+                <input id="fileupload" type="file" name="files[]" data-url="server/php/" multiple>
+              </div> -->
             </form>
           </div>
           <div class="modal-footer">
@@ -111,7 +114,7 @@
     <script id="note-handlebars" type="text/x-handlebars-template">
       <div class="note-body panel panel-default">
         <div class="row panel-heading">
-          <h3 id="{{noteIdTitle}}" class="text-center panel-title">{{noteTitle}}</h3>
+          <h3 id="note-handlebars-title" data-id="{{noteIdTitle}}" class="text-center panel-title">{{noteTitle}}</h3>
         </div>
         <div class="row panel-body">
           {{#each noteBody}}
@@ -135,7 +138,24 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script type="text/javascript" src="main.js"></script>
-
+    <!-- Picture Upload Scripts -->
+    <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="js/vendor/jquery.ui.widget.js"></script>
+    <script src="js/jquery.iframe-transport.js"></script>
+    <script src="js/jquery.fileupload.js"></script>
+    <script>
+      $(function () {
+          $('#fileupload').fileupload({
+              dataType: 'json',
+              done: function (e, data) {
+                  $.each(data.result.files, function (index, file) {
+                      $('<p/>').text(file.name).appendTo(document.body);
+                  });
+              }
+          });
+      });
+    </script> -->
+    <!-- End Picture Upload Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
   </body>

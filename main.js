@@ -249,27 +249,37 @@ $('#home-button').on('click', function(ev){
   fetchNotes()
 })
 
+$(document.body).on('click', '#note-handlebars-title', function(ev){
+  console.log("hi")
+  location.hash = '#' + ev.target.getAttribute('data-id')
+  $.getJSON(api_root + 'notes/' + ev.target.getAttribute('data-id'), function(data){
+    noteModal(data)
+  })
+})
 
+window.addEventListener("hashchange", getLocationHashNote(), false)
 
-window.addEventListener("hashchange", noteModal(), false)
-
-function noteModal(){
+function getLocationHashNote(){
   $.getJSON(api_root + 'notes_count', function(data){
     }).success(function(data){
     if ((location.hash[0] === '#') && (location.hash.substring(1) <= data)){
       console.log("hi")
       $.getJSON(api_root + 'notes/' + location.hash.substring(1), function(data){
         console.log(data.note.body)
-        $('#show-note-modal-content').empty()
-        $('#show-note-modal-title').append(data.note.title)
-        $('#show-note-modal-created').append(moment(data.note.created_at, "YYYYMMDD").fromNow())
-        noteBodySplit(data.note.body).forEach(par => $('#show-note-modal-body').append(`<p>${par}</p>`))
-        data.note.tags.forEach(tag => $('#show-note-modal-tags').append(`<a class="tag-link" data-name="${tag.name}"> ${tag.name} </a>`))
-        $('#show-note-modal').modal('show')
+        noteModal(data)
       })
   }
   }
 )}
+
+function noteModal(data){
+  $('.empty-show-note-modal').empty()
+  $('#show-note-modal-title').append(data.note.title)
+  $('#show-note-modal-created').append(moment(data.note.created_at, "YYYYMMDD").fromNow())
+  noteBodySplit(data.note.body).forEach(par => $('#show-note-modal-body').append(`<p>${par}</p>`))
+  data.note.tags.forEach(tag => $('#show-note-modal-tags').append(`<a class="tag-link" data-name="${tag.name}"> ${tag.name} </a>`))
+  $('#show-note-modal').modal('show')
+}
 
 
 })
