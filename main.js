@@ -1,5 +1,7 @@
 $(document).ready(function(){
   var api_root = 'http://localhost:3001/api/'
+  var titleSource = $("#title-handlebars").html()
+  var titleTemplate = Handlebars.compile(titleSource)
 
 
 
@@ -91,17 +93,13 @@ $(document.body).on('click', '#logout-button', function(ev){
   fetchNotes()
 })
 
-
   function titleBuilder(punctuation, tagName){
     $('#title').empty()
     console.log(tagName)
-    var titleSource = $("#title-handlebars").html()
-    var titleTemplate = Handlebars.compile(titleSource)
     var titleContext = {punctuation: punctuation, tagName: tagName}
     var titleHtml = titleTemplate(titleContext)
     $('#title').prepend(titleHtml)
   }
-
 
   function fetchNotes(){
     $('#body').empty()
@@ -188,7 +186,7 @@ function editModalClose(){
 }
 
 
-$(document.body).on('click', '#edit-note', function(ev){
+$(document.body).on('click', '.edit-note', function(ev){
   $.getJSON(api_root + `notes/${ev.target.getAttribute('data-id')}`, function(data){
     console.log(data)
     editModalOpen(data)
@@ -222,15 +220,7 @@ $(document.body).on('click', '#edit-note-submit', function(ev){
     $.each(data.responseJSON.errors, function(i, x){$('.errors').prepend(`<h6 class="error-messages">${x.error + '. '} </h6>`)})
 
   })
-
-
-
-
 })
-
-
-
-
 
 $(document.body).on('click', '#post-note', function(ev){
   ev.preventDefault()
@@ -289,6 +279,4 @@ function noteModal(data){
   data.note.tags.forEach(tag => $('#show-note-modal-tags').append(`<a class="tag-link" data-name="${tag.name}"> ${tag.name} </a>`))
   $('#show-note-modal').modal('show')
 }
-
-
 })
