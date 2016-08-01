@@ -234,10 +234,9 @@ $(document.body).on('click', '#post-note', function(ev){
  }).success(function(data){
   noteBuilder(data.note, true)
   $('#new-post-modal').modal('hide')
-  $('#note-title').empty()
-  $('#note-body').empty()
-  $('#note-tags').empty()
-  console.log("emptied?")
+  $('#note-title').val("")
+  $('#note-body').val("")
+  $('#note-tags').val("")
 
 }).error(function(data){
   $('.errors').empty()
