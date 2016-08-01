@@ -237,6 +237,7 @@ $(document.body).on('click', '#post-note', function(ev){
   $('#note-title').empty()
   $('#note-body').empty()
   $('#note-tags').empty()
+  console.log("emptied?")
 
 }).error(function(data){
   $('.errors').empty()
