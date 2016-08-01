@@ -1,5 +1,5 @@
 $(document).ready(function(){
-  var api_root = 'https://agile-springs-31596.herokuapp.com/api/'
+  var api_root = 'http://localhost:3001/api/'
 
 
 
@@ -24,7 +24,6 @@ $(document).ready(function(){
       $('#signup-button').prop('disabled', true)
     }
     if (boolean === false){
-
       console.log("should be changing stuff")
       $('#logout-button').html('Log In')
       $('#logout-button').attr('id', 'login-button')
@@ -107,7 +106,7 @@ $(document.body).on('click', '#logout-button', function(ev){
   function fetchNotes(){
     $('#body').empty()
     console.log(api_token())
-    if((api_token() === undefined) || (api_token() === null)){
+    if((api_token() === undefined) || (api_token() === "null")){
       console.log('hi!')
       loggedIn(false)
     }
@@ -135,7 +134,7 @@ function noteBodySplit(body){
 }
 
 function editable(){
-  if ((api_token() !== undefined) && (api_token() !== null)){
+  if ((api_token() !== undefined) && (api_token() !== "null")){
     return "Edit Note"
 }
 }
