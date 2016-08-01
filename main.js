@@ -24,6 +24,8 @@ $(document).ready(function(){
       $('#signup-button').prop('disabled', true)
     }
     if (boolean === false){
+
+      console.log("should be changing stuff")
       $('#logout-button').html('Log In')
       $('#logout-button').attr('id', 'login-button')
       $('#signup-button').prop('disabled', false)
