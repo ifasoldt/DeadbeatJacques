@@ -142,7 +142,7 @@ function noteBuilder(note, prepend){
   var noteSource = $("#note-handlebars").html()
   var noteTemplate = Handlebars.compile(noteSource)
 
-  var noteContext = {noteIdTitle: note.id, editButton: editable(), noteIdEdit: note.id, noteTitle: note.title, noteBody: noteBodySplit(note.body), noteTags:note.tags, noteCreatedAt: moment(note.created_at, "YYYYMMDD").fromNow()}
+  var noteContext = {noteIdTitle: note.id, noteImage: note.note_image, editButton: editable(), noteIdEdit: note.id, noteTitle: note.title, noteBody: noteBodySplit(note.body), noteTags:note.tags, noteCreatedAt: moment(note.created_at, "YYYYMMDD").fromNow()}
   var noteHtml = noteTemplate(noteContext)
   if(prepend === true){
     $("#body").prepend(noteHtml)
@@ -224,13 +224,11 @@ $(document.body).on('click', '#edit-note-submit', function(ev){
 
 $(document.body).on('click', '#post-note', function(ev){
   ev.preventDefault()
-  $.post(api_root + "notes",
-  {
-   api_token: api_token(),
-   title: $('#note-title').val(),
-   body: $('#note-body').val(),
-   tags: $('#note-tags').val()
- }).success(function(data){
+  $.post({url: api_root + "notes",
+        data: noteFormData(),
+        processData: false,
+        contentType: false
+}).success(function(data){
   noteBuilder(data.note, true)
   $('#new-post-modal').modal('hide')
   $('#note-title').val("")
@@ -242,6 +240,19 @@ $(document.body).on('click', '#post-note', function(ev){
   $.each(data.responseJSON.errors, function(i, x){$('.errors').prepend(`<h6 class="error-messages">${x.error + '. '} </h6>`)})
 })
 })
+
+function noteFormData() {
+    form = document.getElementById('new-post-form')
+    console.log(form)
+    var data = new FormData(form)
+    console.log(data)
+    // data.append('body', $('#chirp-body').val())
+    // data.append('photo', $('#chirp-photo').val())
+    data.append('api_token', api_token())
+    console.log(data)
+    console.log(data.entries())
+    return data
+  }
 
 $('#home-button').on('click', function(ev){
   location.hash = ""
@@ -255,6 +266,8 @@ $(document.body).on('click', '#note-handlebars-title', function(ev){
     noteModal(data)
   })
 })
+
+
 
 window.addEventListener("hashchange", getLocationHashNote(), false)
 
@@ -274,9 +287,13 @@ function getLocationHashNote(){
 function noteModal(data){
   $('.empty-show-note-modal').empty()
   $('#show-note-modal-title').append(data.note.title)
+  console.log(data.note)
+  $('#show-note-modal-picture').attr('src', data.note.note_image)
   $('#show-note-modal-created').append(moment(data.note.created_at, "YYYYMMDD").fromNow())
   noteBodySplit(data.note.body).forEach(par => $('#show-note-modal-body').append(`<p>${par}</p>`))
   data.note.tags.forEach(tag => $('#show-note-modal-tags').append(`<a class="tag-link" data-name="${tag.name}"> ${tag.name} </a>`))
   $('#show-note-modal').modal('show')
 }
+
+
 })

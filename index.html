@@ -31,6 +31,11 @@
             <h6 class="empty-show-note-modal" id="show-note-modal-created"></h6>
           </div>
           <div class="modal-body">
+            <div class="row border-bottom">
+              <div class="col-xs-8 col-xs-offset-2">
+                <image id="show-note-modal-picture" class="img-responsive img-thumbnail m-x-auto d-block note-image-css" src=""/>
+              </div>
+            </div>
             <div id="show-note-modal-body" class="empty-show-note-modal">
             </div>
             <h6 id="show-note-modal-tags" class="empty-show-note-modal">Tags: </h6>
@@ -85,24 +90,24 @@
           <div class="modal-body">
             <div class="errors">
             </div>
-            <form>
+            <form id="new-post-form">
               <div class="form-group">
                 <label class="form-control-label">Title</label>
-                <input type="text" class="form-control" id="note-title">
+                <input type="text" name="title" class="form-control" id="note-title">
               </div>
               <div class="form-group form-input">
                 <label for="message-text" class="form-control-label">Note</label>
-                <textarea class="form-control" id="note-body"></textarea>
+                <textarea class="form-control" name="body" id="note-body"></textarea>
               </div>
               <div class="form-group">
                 <label class="form-control-label">Tags, separated by commas:</label>
-                <input type="text" class="form-control" id="note-tags">
+                <input type="text" name="tags" class="form-control" id="note-tags">
               </div>
-              <!-- <div class="form-group">
+              <div class="form-group">
                 <label class="form-control-label">Upload A Picture</label>
-                <input id="fileupload" type="file" name="files[]" data-url="server/php/" multiple>
-              </div> -->
-            </form>
+                <input type="file" name="note_image" id="note_image" />
+              </div>
+            </form id="new-post-form">
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -116,10 +121,17 @@
         <div class="row panel-heading">
           <h3 id="note-handlebars-title" data-id="{{noteIdTitle}}" class="text-center panel-title">{{noteTitle}}</h3>
         </div>
-        <div class="row panel-body">
-          {{#each noteBody}}
-          <p>{{this}}</p>
-          {{/each}}
+        <div class="row panel-body border-bottom">
+          <div class="row border-bottom">
+            <div class="col-xs-8 col-xs-offset-2">
+              <image class="img-responsive img-thumbnail m-x-auto d-block note-image-css" src={{noteImage}}/>
+            </div>
+          </div>
+          <div class="row padding-small">
+            {{#each noteBody}}
+            <p>{{this}}</p>
+            {{/each}}
+          </div>
         </div>
         <div class="row panel-footer">
           <h6 class"text-muted">{{noteCreatedAt}}</h5>
@@ -139,6 +151,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script type="text/javascript" src="main.js"></script>
     <!-- Picture Upload Scripts -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.12.5/js/jquery.fileupload.min.js"></script>
     <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="js/vendor/jquery.ui.widget.js"></script>
     <script src="js/jquery.iframe-transport.js"></script>

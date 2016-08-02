@@ -89,3 +89,16 @@ textarea.form-control{
 .cursor-link{
   cursor: pointer;
 }
+
+.padding-small {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.note-image-css{
+  margin-bottom: 20px;
+}
+
+.border-bottom{
+  border-bottom: 2px solid white;
+}
