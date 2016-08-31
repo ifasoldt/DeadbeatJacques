@@ -96,6 +96,15 @@ $(document.body).on('click', '#logout-button', function(ev){
   function titleBuilder(punctuation, tagName){
     $('#title').empty()
     console.log(tagName)
+  fetchNotes()
+})
+
+
+  function titleBuilder(punctuation, tagName){
+    $('#title').empty()
+    console.log(tagName)
+    var titleSource = $("#title-handlebars").html()
+    var titleTemplate = Handlebars.compile(titleSource)
     var titleContext = {punctuation: punctuation, tagName: tagName}
     var titleHtml = titleTemplate(titleContext)
     $('#title').prepend(titleHtml)
@@ -105,6 +114,11 @@ $(document.body).on('click', '#logout-button', function(ev){
     $('#body').empty()
     console.log(api_token())
     if((api_token() === undefined) || (api_token() === "null")){
+
+  function fetchNotes(){
+    $('#body').empty()
+    console.log(api_token())
+    if((api_token() === undefined) || api_token() === null){
       console.log('hi!')
       loggedIn(false)
     }
@@ -137,11 +151,9 @@ function editable(){
 }
 }
 
-
 function noteBuilder(note, prepend){
   var noteSource = $("#note-handlebars").html()
   var noteTemplate = Handlebars.compile(noteSource)
-
   var noteContext = {noteIdTitle: note.id, noteImage: note.note_image, editButton: editable(), noteIdEdit: note.id, noteTitle: note.title, noteBody: noteBodySplit(note.body), noteTags:note.tags, noteCreatedAt: moment(note.created_at, "YYYYMMDD").fromNow()}
   var noteHtml = noteTemplate(noteContext)
   if(prepend === true){
@@ -187,6 +199,7 @@ function editModalClose(){
 
 
 $(document.body).on('click', '.edit-note', function(ev){
+$(document.body).on('click', '#edit-note', function(ev){
   $.getJSON(api_root + `notes/${ev.target.getAttribute('data-id')}`, function(data){
     console.log(data)
     editModalOpen(data)
@@ -235,6 +248,27 @@ $(document.body).on('click', '#post-note', function(ev){
   $('#note-body').val("")
   $('#note-tags').val("")
 
+})
+
+
+
+
+
+$(document.body).on('click', '#post-note', function(ev){
+  ev.preventDefault()
+  $.post(api_root + "notes",
+  {
+   api_token: api_token(),
+   title: $('#note-title').val(),
+   body: $('#note-body').val(),
+   tags: $('#note-tags').val()
+ }).success(function(data){
+  noteBuilder(data.note, true)
+  $('#new-post-modal').modal('hide')
+  $('#note-title').empty()
+  $('#note-body').empty()
+  $('#note-tags').empty()
+
 }).error(function(data){
   $('.errors').empty()
   $.each(data.responseJSON.errors, function(i, x){$('.errors').prepend(`<h6 class="error-messages">${x.error + '. '} </h6>`)})
@@ -272,6 +306,11 @@ $(document.body).on('click', '#note-handlebars-title', function(ev){
 window.addEventListener("hashchange", getLocationHashNote(), false)
 
 function getLocationHashNote(){
+
+
+window.addEventListener("hashchange", noteModal(), false)
+
+function noteModal(){
   $.getJSON(api_root + 'notes_count', function(data){
     }).success(function(data){
     if ((location.hash[0] === '#') && (location.hash.substring(1) <= data)){
@@ -279,21 +318,27 @@ function getLocationHashNote(){
       $.getJSON(api_root + 'notes/' + location.hash.substring(1), function(data){
         console.log(data.note.body)
         noteModal(data)
+        $('#show-note-modal-content').empty()
+        $('#show-note-modal-title').append(data.note.title)
+        $('#show-note-modal-created').append(moment(data.note.created_at, "YYYYMMDD").fromNow())
+        noteBodySplit(data.note.body).forEach(par => $('#show-note-modal-body').append(`<p>${par}</p>`))
+        data.note.tags.forEach(tag => $('#show-note-modal-tags').append(`<a class="tag-link" data-name="${tag.name}"> ${tag.name} </a>`))
+        $('#show-note-modal').modal('show')
+
       })
   }
   }
 )}
-
-function noteModal(data){
-  $('.empty-show-note-modal').empty()
-  $('#show-note-modal-title').append(data.note.title)
-  console.log(data.note)
-  $('#show-note-modal-picture').attr('src', data.note.note_image)
-  $('#show-note-modal-created').append(moment(data.note.created_at, "YYYYMMDD").fromNow())
-  noteBodySplit(data.note.body).forEach(par => $('#show-note-modal-body').append(`<p>${par}</p>`))
-  data.note.tags.forEach(tag => $('#show-note-modal-tags').append(`<a class="tag-link" data-name="${tag.name}"> ${tag.name} </a>`))
-  $('#show-note-modal').modal('show')
-}
-
+// 
+// function noteModal(data){
+//   $('.empty-show-note-modal').empty()
+//   $('#show-note-modal-title').append(data.note.title)
+//   console.log(data.note)
+//   $('#show-note-modal-picture').attr('src', data.note.note_image)
+//   $('#show-note-modal-created').append(moment(data.note.created_at, "YYYYMMDD").fromNow())
+//   noteBodySplit(data.note.body).forEach(par => $('#show-note-modal-body').append(`<p>${par}</p>`))
+//   data.note.tags.forEach(tag => $('#show-note-modal-tags').append(`<a class="tag-link" data-name="${tag.name}"> ${tag.name} </a>`))
+//   $('#show-note-modal').modal('show')
+// }
 
 })
