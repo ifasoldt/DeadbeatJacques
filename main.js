@@ -26,7 +26,6 @@ $(document).ready(function(){
       $('#signup-button').prop('disabled', true)
     }
     if (boolean === false){
-      console.log("should be changing stuff")
       $('#logout-button').html('Log In')
       $('#logout-button').attr('id', 'login-button')
       $('#signup-button').prop('disabled', false)
@@ -53,7 +52,6 @@ $(document).ready(function(){
       loggedIn(true)
       fetchNotes()
     }).error(function(data){
-      console.log(data.responseJSON.email)
       $('.errors').empty()
       $('.errors').prepend(`<h6 class="error-messages"> email ${data.responseJSON.email} </h6>`)
     })
@@ -86,21 +84,18 @@ $(document.body).on('click', '#login-submit', function(ev){
 
 $(document.body).on('click', '#logout-button', function(ev){
   setApiToken('null')
-  console.log("logged-in?")
   loggedIn(false)
   fetchNotes()
 })
 
   function titleBuilder(punctuation, tagName){
     $('#title').empty()
-    console.log(tagName)
   fetchNotes()
   }
 
 
   function titleBuilder(punctuation, tagName){
     $('#title').empty()
-    console.log(tagName)
     var titleSource = $("#title-handlebars").html()
     var titleTemplate = Handlebars.compile(titleSource)
     var titleContext = {punctuation: punctuation, tagName: tagName}
@@ -110,20 +105,15 @@ $(document.body).on('click', '#logout-button', function(ev){
 
   function fetchNotes(){
     $('#body').empty()
-    console.log(api_token())
     if((api_token() == undefined) || api_token() == 'null'){
-      console.log('hi!')
       loggedIn(false)
     }
     else{
-      console.log('hello!')
       loggedIn(true)
     }
     // When I first log-in, api_token() is still undefined in the console.log on line 100. Why is this? Right afterwards, it isn't.
     //  Answer: It was beacuse I originally had fetchNotes() on line 66, where it running before I'd set the api_token. By putting it on line 61, I make it run a little afterward.
-    console.log(api_token())
     $.getJSON(api_root + 'notes',{api_token: api_token()}, function(data){
-      console.log(data.notes)
       $.each(data.notes, function(i, note){
       noteBuilder(note)
     })
@@ -176,7 +166,6 @@ function editModalOpen(data){
   $('#note-body').val(data.note.body)
   var tagNames = []
   data.note.tags.forEach(tag => tagNames.push(tag.name))
-  console.log(tagNames)
   $('#note-tags').val(tagNames.join(", "))
   $('#new-post-modal').modal('show')
 }
@@ -193,7 +182,6 @@ function editModalClose(){
 
 $(document.body).on('click', '#edit-note', function(ev){
   $.getJSON(api_root + `notes/${ev.target.getAttribute('data-id')}`, function(data){
-    console.log(data)
     editModalOpen(data)
   })
 })
@@ -213,14 +201,12 @@ $(document.body).on('click', '#edit-note-submit', function(ev){
   })
 
   editNote.done(function(data){
-    console.log(data)
     noteBuilder(data.note, true)
     editModalClose()
     // I know that I have all the information I need to write some code that will build a note and shove it where it goes, but I'm not sure how.
   })
 
   editNote.fail(function(data){
-    console.log('data')
     $('.errors').empty()
     $.each(data.responseJSON.errors, function(i, x){$('.errors').prepend(`<h6 class="error-messages">${x.error + '. '} </h6>`)})
 
@@ -251,14 +237,10 @@ $(document.body).on('click', '#post-note', function(ev){
 
 function noteFormData() {
     form = document.getElementById('new-post-form')
-    console.log(form)
     var data = new FormData(form)
-    console.log(data)
     // data.append('body', $('#chirp-body').val())
     // data.append('photo', $('#chirp-photo').val())
     data.append('api_token', api_token())
-    console.log(data)
-    console.log(data.entries())
     return data
   }
 
@@ -268,29 +250,11 @@ $('#home-button').on('click', function(ev){
 })
 
 $(document.body).on('click', '#note-handlebars-title', function(ev){
-  console.log("hi")
   location.hash = '#' + ev.target.getAttribute('data-id')
   $.getJSON(api_root + 'notes/' + ev.target.getAttribute('data-id'), function(data){
     noteModal(data)
   })
 })
-
-
-
-// window.addEventListener("hashchange", getLocationHashNote(), false)
-//
-// function getLocationHashNote(){
-//   $.getJSON(api_root + 'notes_count', function(data){
-//     }).success(function(data){
-//     if ((location.hash[0] === '#') && (location.hash.substring(1) <= data)){
-//       console.log("hi")
-//       $.getJSON(api_root + 'notes/' + location.hash.substring(1), function(data){
-//         console.log(data.note.body)
-//         noteModal(data)
-//       })
-//   }
-//   }
-// )}
 
 
 window.addEventListener("hashchange", noteModal(), false)
@@ -299,9 +263,7 @@ function noteModal(){
   $.getJSON(api_root + 'notes_count', function(data){
     }).success(function(data){
     if ((location.hash[0] === '#') && (location.hash.substring(1) <= data)){
-      console.log("hi")
       $.getJSON(api_root + 'notes/' + location.hash.substring(1), function(data){
-        console.log(data.note.body)
         noteModal(data)
         $('#show-note-modal-content').empty()
         $('#show-note-modal-title').append(data.note.title)
@@ -314,16 +276,5 @@ function noteModal(){
   }
   }
 )}
-//
-// function noteModal(data){
-//   $('.empty-show-note-modal').empty()
-//   $('#show-note-modal-title').append(data.note.title)
-//   console.log(data.note)
-//   $('#show-note-modal-picture').attr('src', data.note.note_image)
-//   $('#show-note-modal-created').append(moment(data.note.created_at, "YYYYMMDD").fromNow())
-//   noteBodySplit(data.note.body).forEach(par => $('#show-note-modal-body').append(`<p>${par}</p>`))
-//   data.note.tags.forEach(tag => $('#show-note-modal-tags').append(`<a class="tag-link" data-name="${tag.name}"> ${tag.name} </a>`))
-//   $('#show-note-modal').modal('show')
-// }
 
 })
