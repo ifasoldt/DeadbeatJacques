@@ -1,5 +1,5 @@
 $(document).ready(function(){
-  var api_root = 'http://localhost:3001/api/'
+  var api_root = 'https://agile-springs-31596.herokuapp.com/api/'
   var titleSource = $("#title-handlebars").html()
   var titleTemplate = Handlebars.compile(titleSource)
 
@@ -232,18 +232,16 @@ $(document.body).on('click', '#edit-note-submit', function(ev){
 
 $(document.body).on('click', '#post-note', function(ev){
   ev.preventDefault()
-  $.post(api_root + "notes",
-  {
-   api_token: api_token(),
-   title: $('#note-title').val(),
-   body: $('#note-body').val(),
-   tags: $('#note-tags').val()
- }).success(function(data){
+  $.post({url: api_root + "notes",
+        data: noteFormData(),
+        processData: false,
+        contentType: false
+}).success(function(data){
   noteBuilder(data.note, true)
   $('#new-post-modal').modal('hide')
-  $('#note-title').empty()
-  $('#note-body').empty()
-  $('#note-tags').empty()
+  $('#note-title').val("")
+  $('#note-body').val("")
+  $('#note-tags').val("")
 
 }).error(function(data){
   $('.errors').empty()
