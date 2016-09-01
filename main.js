@@ -39,8 +39,7 @@ $(document).ready(function(){
     var submit = document.querySelector("#signup-modal .login-signup")
     submit.setAttribute('id', 'signup-submit')
     $('#signup-modal').modal('show')
-  }
-)
+  })
 
 
   $(document.body).on('click', '#signup-submit', function(ev){
@@ -67,8 +66,7 @@ $(document).ready(function(){
     var submit = document.querySelector("#signup-modal .login-signup")
     submit.setAttribute('id', 'login-submit')
     $('#signup-modal').modal('show')
-  }
-)
+  })
 
 $(document.body).on('click', '#login-submit', function(ev){
   $.post(api_root + 'login',
@@ -87,7 +85,7 @@ $(document.body).on('click', '#login-submit', function(ev){
 })
 
 $(document.body).on('click', '#logout-button', function(ev){
-  setApiToken(null)
+  setApiToken('null')
   console.log("logged-in?")
   loggedIn(false)
   fetchNotes()
@@ -97,7 +95,7 @@ $(document.body).on('click', '#logout-button', function(ev){
     $('#title').empty()
     console.log(tagName)
   fetchNotes()
-}
+  }
 
 
   function titleBuilder(punctuation, tagName){
@@ -113,12 +111,7 @@ $(document.body).on('click', '#logout-button', function(ev){
   function fetchNotes(){
     $('#body').empty()
     console.log(api_token())
-    if((api_token() === undefined) || (api_token() === "null")){
-
-  function fetchNotes(){
-    $('#body').empty()
-    console.log(api_token())
-    if((api_token() === undefined) || api_token() === null){
+    if((api_token() == undefined) || api_token() == 'null'){
       console.log('hi!')
       loggedIn(false)
     }
@@ -198,7 +191,6 @@ function editModalClose(){
 }
 
 
-$(document.body).on('click', '.edit-note', function(ev){
 $(document.body).on('click', '#edit-note', function(ev){
   $.getJSON(api_root + `notes/${ev.target.getAttribute('data-id')}`, function(data){
     console.log(data)
@@ -234,23 +226,6 @@ $(document.body).on('click', '#edit-note-submit', function(ev){
 
   })
 })
-
-$(document.body).on('click', '#post-note', function(ev){
-  ev.preventDefault()
-  $.post({url: api_root + "notes",
-        data: noteFormData(),
-        processData: false,
-        contentType: false
-}).success(function(data){
-  noteBuilder(data.note, true)
-  $('#new-post-modal').modal('hide')
-  $('#note-title').val("")
-  $('#note-body').val("")
-  $('#note-tags').val("")
-
-  })
-})
-
 
 
 
@@ -304,9 +279,20 @@ $(document.body).on('click', '#note-handlebars-title', function(ev){
 
 
 
-window.addEventListener("hashchange", getLocationHashNote(), false)
-
-function getLocationHashNote(){
+// window.addEventListener("hashchange", getLocationHashNote(), false)
+//
+// function getLocationHashNote(){
+//   $.getJSON(api_root + 'notes_count', function(data){
+//     }).success(function(data){
+//     if ((location.hash[0] === '#') && (location.hash.substring(1) <= data)){
+//       console.log("hi")
+//       $.getJSON(api_root + 'notes/' + location.hash.substring(1), function(data){
+//         console.log(data.note.body)
+//         noteModal(data)
+//       })
+//   }
+//   }
+// )}
 
 
 window.addEventListener("hashchange", noteModal(), false)
