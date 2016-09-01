@@ -248,6 +248,7 @@ $(document.body).on('click', '#post-note', function(ev){
   $('#note-body').val("")
   $('#note-tags').val("")
 
+  })
 })
 
 
