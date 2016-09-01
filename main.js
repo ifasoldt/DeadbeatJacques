@@ -97,7 +97,7 @@ $(document.body).on('click', '#logout-button', function(ev){
     $('#title').empty()
     console.log(tagName)
   fetchNotes()
-})
+}
 
 
   function titleBuilder(punctuation, tagName){
@@ -329,7 +329,7 @@ function noteModal(){
   }
   }
 )}
-// 
+//
 // function noteModal(data){
 //   $('.empty-show-note-modal').empty()
 //   $('#show-note-modal-title').append(data.note.title)
